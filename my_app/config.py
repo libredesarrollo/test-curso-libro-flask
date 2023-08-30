@@ -1,5 +1,5 @@
 class Config(object): 
-    pass 
+    SQLALCHEMY_DATABASE_URI="mysql+pymysql://root:@localhost:3306/test_flask" 
  
 class ProdConfig(Config): 
     pass 

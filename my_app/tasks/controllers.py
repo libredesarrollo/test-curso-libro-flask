@@ -1,10 +1,13 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 
+from my_app.tasks.models import Task
+
 taskRoute = Blueprint('tasks',__name__, url_prefix="/tasks")
 
 @taskRoute.route('/')
 # @taskRoute.route('/<int:id>')
 def index(): #page:int=1
+    Task
     return "Index"
 
 @taskRoute.route('/<int:id>')
