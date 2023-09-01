@@ -1,0 +1,33 @@
+{% extends "dashboard/master.html" %}
+
+{% block head %} 
+    {{ super() }}
+    <meta name="description" content="List of task">
+{% endblock %}
+
+{% block title %} List {% endblock %}
+
+{% block content %}
+<table>
+    <tr>
+        <td>Id</td>
+        <td>Name</td>
+
+        <td>Options</td>
+    </tr>
+    {% for t in tasks %}
+    <tr>
+        <td>
+            {{ loop.index }}
+        </td>
+        <td>
+            {{ t }}
+        </td>
+        <td>
+            <a href="/tasks/update/{{ loop.index0 }}" target="_blank">Update</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

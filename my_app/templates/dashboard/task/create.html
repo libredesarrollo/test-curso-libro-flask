@@ -1,0 +1,17 @@
+{% extends "dashboard/master.html" %}
+
+{% block head %}
+{{ super() }}
+<meta name="description" content="List of task">
+{% endblock %}
+
+{% block title %} List {% endblock %}
+
+{% block content %}
+
+<form action="" method="post">
+    <input type="text" name="task">
+    <input type="submit" value="Send">
+</form>
+
+{% endblock %}
