@@ -9,9 +9,29 @@
 
 {% block content %}
 
-<form action="" method="post">
+<form action="{{ url_for('tasks.create') }}" method="POST" enctype="multipart/form-data">
+    {{ form.name.label }}
+    {{ form.name }}
+
+    {{ form.document.label }}
+    {{ form.document }}
+
+    {{ form.csrf_token }}
+
+    <button class="btn btn-success" type="submit"><i class="fa fa-save"></i> Guardar</button>
+</form>
+
+{% if form.errors %}
+<ul class="errors">
+    {% for error in form.errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<!-- <form action="" method="post">
     <input type="text" name="task">
     <input type="submit" value="Send">
-</form>
+</form> -->
 
 {% endblock %}

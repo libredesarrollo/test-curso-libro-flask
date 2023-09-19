@@ -1,7 +1,14 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+import os
 
-from my_app.tasks.models import Task
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from werkzeug.utils import secure_filename
+
+# from my_app.tasks.models import Task
+from my_app import app
+from my_app.tasks import forms
 from my_app.tasks import operations
+
+from my_app import config
 
 taskRoute = Blueprint('tasks',__name__, url_prefix="/tasks")
 
@@ -23,8 +30,21 @@ def delete(id:int):
 
 @taskRoute.route('/create', methods=('GET', 'POST'))
 def create():
-   task_list.append(request.form.get('task')) #request.args.get('task')
-   return render_template('dashboard/task/create.html')
+
+   # form = forms.Task(csrf_enabled=False)
+   form = forms.Task()
+   if form.validate_on_submit():
+      operations.create(form.name.data)
+      print(config.allowed_extensions_file(form.document.data.filename))
+      if form.document.data and config.allowed_extensions_file(form.document.data.filename):
+         print(form.document.data)
+         f = form.document.data
+         filename = secure_filename(f.filename)
+         f.save(os.path.join(
+            app.instance_path, app.config['UPLOAD_FOLDER'], filename
+         ))
+     
+   return render_template('dashboard/task/create.html', form=form)
 
 @taskRoute.route('/update/<int:id>', methods=['GET','POST'])
 def update(id:int):
