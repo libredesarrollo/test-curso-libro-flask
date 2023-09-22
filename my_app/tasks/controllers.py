@@ -38,15 +38,15 @@ def create():
    form.category.choices = categories
    # print(form.date.data)
    if form.validate_on_submit():
-      #operations.create(form.name.data)
+      operations.create(form.name.data, form.category.data)
       # print(config.allowed_extensions_file(form.document.data.filename))
-      if form.document.data and config.allowed_extensions_file(form.document.data.filename):
-         print(form.document.data)
-         f = form.document.data
-         filename = secure_filename(f.filename)
-         f.save(os.path.join(
-            app.instance_path, app.config['UPLOAD_FOLDER'], filename
-         ))
+      # if form.document.data and config.allowed_extensions_file(form.document.data.filename):
+      #    print(form.document.data)
+         # f = form.document.data
+         # filename = secure_filename(f.filename)
+         # f.save(os.path.join(
+         #    app.instance_path, app.config['UPLOAD_FOLDER'], filename
+         # ))
      
    return render_template('dashboard/task/create.html', form=form)
 
@@ -62,4 +62,7 @@ def update(id:int):
    if request.method == 'GET':
       form.name.data = task.name
       form.category.data = task.category_id
+   
+   if form.validate_on_submit():
+      operations.update(form.name.data, form.category.data)
    return "Update "+ str(id)

@@ -14,16 +14,17 @@ def getAll():
     tasks = db.session.query(models.Task).all()
     return tasks 
 
-def create(name: str):
-    taskdb = models.Task(name=name)
+def create(name: str, category_id:int):
+    taskdb = models.Task(name=name, category_id=category_id)
     db.session.add(taskdb)
     db.session.commit()
     db.session.refresh(taskdb)
     return taskdb
 
-def update(id: int, name: str):
+def update(id: int, name: str, category_id:int):
     taskdb = getById(id=id)
-    taskdb.session.name = name
+    taskdb.name = name
+    taskdb.category_id = category_id
 
     db.session.add(taskdb)
     db.session.commit()
