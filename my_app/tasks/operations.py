@@ -38,3 +38,22 @@ def delete(id: int):
 
 def paginate(page:int, size:int):
     models.Task.query.paginate(page,size)
+
+#tag
+def addTag(id: int, tagid: int):
+    task = getById(id=id)
+    task = getById(id)
+    tag = models.Tag.query.get_or_404(tagid)
+    task.tags.append(tag)
+
+    db.session.add(task)
+    return task
+
+def removeTag(id: int, tagid: int):
+    task = getById(id=id)
+    task = getById(id)
+    tag = models.Tag.query.get_or_404(tagid)
+    task.tags.remove(tag)
+
+    db.session.add(task)
+    return task

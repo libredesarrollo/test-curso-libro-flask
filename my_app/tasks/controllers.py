@@ -55,9 +55,13 @@ def update(id:int):
 
    task = operations.getById(id)   
    form = forms.Task()#meta={'csrf':False}
+   formTag = forms.TaskTag(meta={'csrf':False})
 
    categories = [ (c.id, c.name) for c in models.Category.query.all()]
    form.category.choices = categories
+
+   tags = [ (c.id, c.name) for c in models.Tag.query.all()]
+   formTag.tag.choices = tags
 
    if request.method == 'GET':
       form.name.data = task.name
@@ -65,4 +69,17 @@ def update(id:int):
    
    if form.validate_on_submit():
       operations.update(form.name.data, form.category.data)
-   return "Update "+ str(id)
+   return render_template('dashboard/task/update.html', form=form, formTag=formTag)
+
+
+@taskRoute.route('/<int:id>/tag/<int:tagid>/add', methods=['POST'])
+def tagAdd(id:int, tagid:int):
+
+   operations.addTag(id, tagid)
+   return redirect(url_for("tasks.update",id=id))
+
+@taskRoute.route('/<int:id>/tag/<int:tagid>/delete', methods=['POST'])
+def tagRemove(id:int, tagid:int):
+
+   operations.removeTag(id, tagid)
+   return redirect(url_for("tasks.update",id=id))

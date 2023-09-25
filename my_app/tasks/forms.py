@@ -11,3 +11,7 @@ class Task(FlaskForm):
     # price = DecimalField('Precio', validators=[InputRequired(), NumberRange(min=Decimal('0.0'))])
     # category_id = SelectField('Categoría', coerce=int)
     # file = FileField('Archivo') #, validators=[FileRequired()]
+
+
+class TaskTag(FlaskForm):
+   tag = SelectField('Tag',)
