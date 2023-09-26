@@ -55,7 +55,7 @@ def update(id:int):
 
    task = operations.getById(id)   
    form = forms.Task()#meta={'csrf':False}
-   formTag = forms.TaskTag(meta={'csrf':False})
+   formTag = forms.TaskTag()
 
    categories = [ (c.id, c.name) for c in models.Category.query.all()]
    form.category.choices = categories
@@ -69,17 +69,28 @@ def update(id:int):
    
    if form.validate_on_submit():
       operations.update(form.name.data, form.category.data)
-   return render_template('dashboard/task/update.html', form=form, formTag=formTag)
+   return render_template('dashboard/task/update.html', form=form, formTag=formTag, id=id)
 
 
-@taskRoute.route('/<int:id>/tag/<int:tagid>/add', methods=['POST'])
-def tagAdd(id:int, tagid:int):
+@taskRoute.route('/<int:id>/tag/add', methods=['POST'])
+def tagAdd(id:int):
 
-   operations.addTag(id, tagid)
+   formTag = forms.TaskTag()
+   tags = [ (c.id, c.name) for c in models.Tag.query.all()]
+   formTag.tag.choices = tags
+
+   if formTag.validate_on_submit():
+      operations.addTag(id, formTag.tag.data)
+
    return redirect(url_for("tasks.update",id=id))
 
-@taskRoute.route('/<int:id>/tag/<int:tagid>/delete', methods=['POST'])
-def tagRemove(id:int, tagid:int):
+@taskRoute.route('/<int:id>/tag/delete', methods=['POST'])
+def tagRemove(id:int):
 
-   operations.removeTag(id, tagid)
+   formTag = forms.TaskTag()
+   tags = [ (c.id, c.name) for c in models.Tag.query.all()]
+   formTag.tag.choices = tags
+   if formTag.validate_on_submit():
+      operations.removeTag(id, formTag.tag.data)
+      
    return redirect(url_for("tasks.update",id=id))

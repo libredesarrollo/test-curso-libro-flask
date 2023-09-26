@@ -42,11 +42,11 @@ def paginate(page:int, size:int):
 #tag
 def addTag(id: int, tagid: int):
     task = getById(id=id)
-    task = getById(id)
     tag = models.Tag.query.get_or_404(tagid)
     task.tags.append(tag)
 
     db.session.add(task)
+    db.session.commit()
     return task
 
 def removeTag(id: int, tagid: int):
@@ -56,4 +56,5 @@ def removeTag(id: int, tagid: int):
     task.tags.remove(tag)
 
     db.session.add(task)
+    db.session.commit()
     return task

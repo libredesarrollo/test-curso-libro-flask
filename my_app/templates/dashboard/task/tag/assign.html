@@ -1,5 +1,15 @@
-<form action="" method="post">
+<form action="{{ url_for('tasks.tagAdd', id=id) }}" method="post">
     {{formTag.tag.label}}
     {{formTag.tag}}
+
+    {{ formTag.csrf_token }}
     <button type="submit">Send</button>
 </form>
+
+{% if formTag.errors %}
+<ul class="errors">
+    {% for error in formTag.errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
