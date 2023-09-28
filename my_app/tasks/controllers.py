@@ -47,7 +47,7 @@ def create():
          # f.save(os.path.join(
          #    app.instance_path, app.config['UPLOAD_FOLDER'], filename
          # ))
-     
+   print(form.name.errors)
    return render_template('dashboard/task/create.html', form=form)
 
 @taskRoute.route('/update/<int:id>', methods=['GET','POST'])

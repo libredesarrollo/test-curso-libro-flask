@@ -5,11 +5,3 @@
     {{ formTag.csrf_token }}
     <button type="submit">Send</button>
 </form>
-
-{% if formTag.errors %}
-<ul class="errors">
-    {% for error in formTag.errors %}
-    <li>{{ error }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
