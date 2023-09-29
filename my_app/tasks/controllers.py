@@ -60,6 +60,8 @@ def update(id:int):
    categories = [ (c.id, c.name) for c in models.Category.query.all()]
    form.category.choices = categories
 
+   print(models.Tag.query.get(1).tasks)
+
    tags = [ (c.id, c.name) for c in models.Tag.query.all()]
    formTag.tag.choices = tags
 
@@ -69,7 +71,7 @@ def update(id:int):
    
    if form.validate_on_submit():
       operations.update(form.name.data, form.category.data)
-   return render_template('dashboard/task/update.html', form=form, formTag=formTag, id=id)
+   return render_template('dashboard/task/update.html', form=form, formTag=formTag,task=task, id=id)
 
 
 @taskRoute.route('/<int:id>/tag/add', methods=['POST'])
