@@ -1,5 +1,13 @@
 <ul>
     {% for t in task.tags %}
-    <li>{{t.name}}</li>
+        <li>
+            {{t.name}}
+            <form action="{{ url_for('tasks.tagRemove', id=id) }}" method="post">
+                {{formTagDelete.tag(value=t.id)}}
+            
+                {{ formTagDelete.csrf_token }}
+                <button type="submit">Delete</button>
+            </form>
+        </li>
     {% endfor %}
 </ul>

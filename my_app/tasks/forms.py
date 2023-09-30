@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DecimalField, SelectField, FileField, DateField
+from wtforms import StringField, DecimalField, SelectField, FileField, DateField, HiddenField
 from wtforms.validators import InputRequired, ValidationError
 
 def my_length_check(form, field):
@@ -35,5 +35,8 @@ class Task(FlaskForm):
     #         raise ValidationError('Name must be less than 2 characters')
 
 
-class TaskTag(FlaskForm):
+class TaskTagAdd(FlaskForm):
    tag = SelectField('Tag',)
+
+class TaskTagRemove(FlaskForm):
+   tag = HiddenField('Tag')
