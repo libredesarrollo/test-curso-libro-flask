@@ -69,6 +69,7 @@ def update(id:int):
    
    if form.validate_on_submit():
       operations.update(form.name.data, form.category.data)
+      flash('The registry has been updated successfully')
    return render_template('dashboard/task/update.html', form=form, formTag=formTag, formTagDelete=forms.TaskTagRemove() ,task=task, id=id)
 
 
