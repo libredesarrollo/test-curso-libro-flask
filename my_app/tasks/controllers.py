@@ -8,6 +8,7 @@ from my_app import app
 from my_app.tasks import forms
 from my_app.tasks import models
 from my_app.tasks import operations
+from my_app.documents import operations as doc_operations
 
 from my_app import config
 
@@ -68,8 +69,18 @@ def update(id:int):
       form.category.data = task.category_id
    
    if form.validate_on_submit():
-      operations.update(form.name.data, form.category.data)
+      operations.update(id, form.name.data, form.category.data)
       flash('The registry has been updated successfully')
+
+      if form.file.data and config.allowed_extensions_file(form.file.data.filename):
+         f = form.file.data
+         filename = secure_filename(f.filename)
+         f.save(os.path.join(
+             app.instance_path, app.config['UPLOAD_FOLDER'], filename
+         ))
+         document = doc_operations.create(filename, filename.lower().rsplit('.', 1)[1])
+         operations.update(id, form.name.data, form.category.data, document.id)
+         
    return render_template('dashboard/task/update.html', form=form, formTag=formTag, formTagDelete=forms.TaskTagRemove() ,task=task, id=id)
 
 

@@ -28,7 +28,7 @@ class Task(FlaskForm):
     category = SelectField('Category',)
     # price = DecimalField('Precio', validators=[InputRequired(), NumberRange(min=Decimal('0.0'))])
     # category_id = SelectField('Categoría', coerce=int)
-    # file = FileField('Archivo') #, validators=[FileRequired()]
+    file = FileField('Archivo') #, validators=[FileRequired()]
 
     # def validate_name(form, field):
     #     if len(field.data) > 2:

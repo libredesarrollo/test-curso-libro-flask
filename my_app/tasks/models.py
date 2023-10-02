@@ -1,5 +1,7 @@
 from sqlalchemy.orm import relationship
 
+from my_app.documents.models import Document
+
 from my_app import db
 
 task_tag = db.Table('task_tag', 
@@ -11,6 +13,8 @@ class Task(db.Model):
     __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
+    document_id = db.Column(db.Integer, db.ForeignKey('documents.id'),
+        nullable=True)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'),
         nullable=False)
     tags = relationship('Tag', secondary=task_tag, back_populates='tasks')

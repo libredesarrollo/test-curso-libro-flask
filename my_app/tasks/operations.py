@@ -21,10 +21,12 @@ def create(name: str, category_id:int):
     db.session.refresh(taskdb)
     return taskdb
 
-def update(id: int, name: str, category_id:int):
+def update(id: int, name: str, category_id:int, document_id:int = None):
     taskdb = getById(id=id)
     taskdb.name = name
     taskdb.category_id = category_id
+    if document_id is not None:
+        taskdb.document_id = document_id
 
     db.session.add(taskdb)
     db.session.commit()
