@@ -19,6 +19,8 @@ class Task(db.Model):
         nullable=False)
     tags = relationship('Tag', secondary=task_tag, back_populates='tasks')
 
+    document = relationship('Document', lazy='joined')
+
 class Category(db.Model):
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)

@@ -24,7 +24,17 @@
 </form>
 
 
+<h3>Document</h3>
+{% if task.document: %}
+
+    
+    {% with document=task.document %}
+        {% include 'dashboard/document/_detail.html'  %}
+    {% endwith %}
+{% endif %}
+
 <h3>Tags</h3>
     {% include 'dashboard/task/tag/index.html' %}
     {% include 'dashboard/task/tag/assign.html' %}
+
 {% endblock %}

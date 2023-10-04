@@ -27,7 +27,7 @@ def show(id:int):
 
 @taskRoute.route('/delete/<int:id>')
 def delete(id:int):
-   del task_list[id] 
+   del task_list[id]
    return "Delete "+ str(id)
 
 @taskRoute.route('/create', methods=('GET', 'POST'))
@@ -72,13 +72,11 @@ def update(id:int):
       operations.update(id, form.name.data, form.category.data)
       flash('The registry has been updated successfully')
 
-      if form.file.data and config.allowed_extensions_file(form.file.data.filename):
-         f = form.file.data
+      f = form.file.data
+      if f and config.allowed_extensions_file(f.filename):
          filename = secure_filename(f.filename)
-         f.save(os.path.join(
-             app.instance_path, app.config['UPLOAD_FOLDER'], filename
-         ))
-         document = doc_operations.create(filename, filename.lower().rsplit('.', 1)[1])
+         
+         document = doc_operations.create(filename, filename.lower().rsplit('.', 1)[1], f)
          operations.update(id, form.name.data, form.category.data, document.id)
          
    return render_template('dashboard/task/update.html', form=form, formTag=formTag, formTagDelete=forms.TaskTagRemove() ,task=task, id=id)

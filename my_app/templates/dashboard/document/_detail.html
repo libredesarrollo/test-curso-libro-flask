@@ -1,0 +1,6 @@
+{% if document.ext == 'png' or document.ext == 'jpeg' or document.ext == 'jpg': %}
+<img src="{{ document.name }}">
+{% endif %}
+<a href="" download>Download</a>
+
+{{ document.name }}
