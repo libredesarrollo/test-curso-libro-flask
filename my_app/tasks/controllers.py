@@ -70,7 +70,7 @@ def update(id:int):
    
    if form.validate_on_submit():
       operations.update(id, form.name.data, form.category.data)
-      flash('The registry has been updated successfully')
+      flash('The registry has been updated successfully', 'info')
 
       f = form.file.data
       if f and config.allowed_extensions_file(f.filename):
