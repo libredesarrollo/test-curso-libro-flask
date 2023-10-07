@@ -1,6 +1,9 @@
-from flask import Flask 
+from flask import Flask
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager 
+
 from flask import render_template, request 
 
 from my_app.config import DevConfig 
@@ -16,6 +19,11 @@ migrate = Migrate(app, db)
 from my_app.tasks.controllers import taskRoute 
 app.register_blueprint(taskRoute) 
 
+#login
+login_manager = LoginManager() 
+login_manager.init_app(app) 
+login_manager.login_view = 'auth.login' 
+
 # final process
 # with app.app_context():
 #     db.create_all()
@@ -26,3 +34,4 @@ app.register_blueprint(taskRoute)
 def hello_world(): 
     name = request.args.get('name', 'DesarrolloLibre') 
     return render_template('index.html', name=name)
+    
