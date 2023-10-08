@@ -1,7 +1,7 @@
 from flask import g, redirect, url_for, render_template, flash, Blueprint 
 from flask_login import current_user, login_user, logout_user, login_required
 
-from my_app import login_manager
+from my_app import login_manager, db
 from my_app.auth.models import User 
 from my_app.auth.forms import  RegistrationForm, LoginForm 
 
@@ -43,7 +43,38 @@ def login():
         flash(form.errors, 'danger')
 
     return render_template('login.html', form=form)
- 
+
+@authRoute.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        flash('Your are already logged in.', 'info')
+        return redirect(url_for('auth.home'))
+
+    form = RegistrationForm()
+
+    if form.validate_on_submit():
+        # username = request.form.get('username')
+        # password = request.form.get('password')
+        username = form.username.data
+        password = form.password.data
+        existing_username = User.query.filter_by(username=username).first()
+        if existing_username:
+            flash(
+                'This username has been already taken. Try another one.',
+                'warning'
+            )
+            return render_template('register.html', form=form)
+        user = User(username, password)
+        db.session.add(user)
+        db.session.commit()
+        flash('You are now registered. Please login.', 'success')
+        return redirect(url_for('auth.login'))
+
+    if form.errors:
+        flash(form.errors, 'danger')
+
+    return render_template('register.html', form=form)
+
 @authRoute.route('/logout') 
 @login_required 
 def logout(): 

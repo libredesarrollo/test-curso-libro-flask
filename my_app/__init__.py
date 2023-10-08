@@ -15,14 +15,20 @@ app.config.from_object(DevConfig)
 #load configuration
 db=SQLAlchemy(app)
 migrate = Migrate(app, db)
-# blueprints
-from my_app.tasks.controllers import taskRoute 
-app.register_blueprint(taskRoute) 
 
 #login
 login_manager = LoginManager() 
 login_manager.init_app(app) 
 login_manager.login_view = 'auth.login' 
+
+
+# blueprints
+from my_app.auth.controllers import authRoute 
+from my_app.tasks.controllers import taskRoute 
+app.register_blueprint(authRoute) 
+app.register_blueprint(taskRoute) 
+
+
 
 # final process
 # with app.app_context():
