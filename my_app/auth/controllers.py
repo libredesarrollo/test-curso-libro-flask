@@ -19,13 +19,11 @@ def get_current_user():
 def login():
     if current_user.is_authenticated:
         flash('You are already logged in.', 'info')
-        return redirect(url_for('auth.home'))
+        return redirect(url_for('tasks.index'))
 
     form = LoginForm()
 
     if form.validate_on_submit():
-        # username = request.form.get('username')
-        # password = request.form.get('password')
         username = form.username.data
         password = form.password.data
 
@@ -33,22 +31,22 @@ def login():
 
         if not (existing_user and existing_user.check_password(password)):
             flash('Invalid username or password. Please try again.', 'danger')
-            return render_template('login.html', form=form)
+            return render_template('user/login.html', form=form)
 
         login_user(existing_user)
         flash('You have successfully logged in.', 'success')
-        return redirect(url_for('auth.home'))
+        return redirect(url_for('tasks.index'))
 
     if form.errors:
         flash(form.errors, 'danger')
 
-    return render_template('login.html', form=form)
+    return render_template('user/login.html', form=form)
 
 @authRoute.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         flash('Your are already logged in.', 'info')
-        return redirect(url_for('auth.home'))
+        return redirect(url_for('tasks.index'))
 
     form = RegistrationForm()
 
@@ -63,17 +61,19 @@ def register():
                 'This username has been already taken. Try another one.',
                 'warning'
             )
-            return render_template('register.html', form=form)
+            return render_template('user/register.html', form=form)
+        
         user = User(username, password)
         db.session.add(user)
         db.session.commit()
+
         flash('You are now registered. Please login.', 'success')
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('user.login'))
 
     if form.errors:
         flash(form.errors, 'danger')
 
-    return render_template('register.html', form=form)
+    return render_template('user/register.html', form=form)
 
 @authRoute.route('/logout') 
 @login_required 
