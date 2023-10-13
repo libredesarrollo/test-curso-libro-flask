@@ -3,10 +3,12 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager 
+from flask_restful import Api 
 
 from flask import render_template, request 
 
-from my_app.config import DevConfig 
+from my_app.config import DevConfig
+from my_app.api.task import TaskApi
  
 app = Flask(__name__)
 app.config.from_object(DevConfig) 
@@ -40,4 +42,9 @@ app.register_blueprint(taskRoute)
 def hello_world(): 
     name = request.args.get('name', 'DesarrolloLibre') 
     return render_template('index.html', name=name)
-    
+
+
+#api
+ 
+api = Api(app)
+api.add_resource(TaskApi, '/api/task')
