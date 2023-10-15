@@ -18,8 +18,18 @@ class Task(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'),
         nullable=False)
     tags = relationship('Tag', secondary=task_tag, back_populates='tasks')
+    category = relationship('Category')
 
     document = relationship('Document', lazy='joined')
+
+    @property
+    def serialize(self):
+       return {
+           'id'    : self.id,
+           'name'  : self.name,
+           'category'  : self.category.name,
+           'category_id'  : self.category_id,
+       }
 
 class Category(db.Model):
     __tablename__ = 'categories'

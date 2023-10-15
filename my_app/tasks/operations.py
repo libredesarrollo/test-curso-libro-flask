@@ -38,8 +38,8 @@ def delete(id: int):
     db.session.delete(task)
     db.session.commit()
 
-def paginate(page:int, size:int):
-    models.Task.query.paginate(page,size)
+def pagination(page:int=1, per_page:int=10):
+    return models.Task.query.paginate(page=page, per_page=per_page)
 
 #tag
 def addTag(id: int, tagid: int):

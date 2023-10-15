@@ -8,7 +8,7 @@ from flask_restful import Api
 from flask import render_template, request 
 
 from my_app.config import DevConfig
-from my_app.api.task import TaskApi
+
  
 app = Flask(__name__)
 app.config.from_object(DevConfig) 
@@ -45,6 +45,6 @@ def hello_world():
 
 
 #api
- 
+from my_app.api.task import TaskApi
 api = Api(app)
 api.add_resource(TaskApi, '/api/task')
