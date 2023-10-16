@@ -1,6 +1,5 @@
 import json
 
-from my_app import api 
 from my_app.tasks import operations
 
 from flask_restful import Resource 
@@ -9,9 +8,9 @@ from flask import request, abort
 #  raise abort(500, message="Unable to determine domain permissions")
 class TaskApi(Resource): 
  
-    def get(self, id=None, page=1): 
+    def get(self, id=None): 
         if not id: 
-            tasks = operations.pagination(page) 
+            tasks = operations.getAll() 
             res = {} 
             for task in tasks: 
                 res[task.id] = { 
@@ -52,55 +51,35 @@ class TaskApi(Resource):
         return task.serialize
 
     def put(self,id):
-        p = Product.query.get(id)   
-        if not p:
-            return sendResJson(None,"Producto no existe",403)
+        task = operations.getById(id)  
+        if not task:
+            abort(400, {'message': 'Task not exits'})
 
         if not request.form:
-            return sendResJson(None,"Sin parámetros",403)
+            abort(403, message="No params")
         
-        #validaciones nombre
         if not "name" in request.form:
-            return sendResJson(None,"Sin parámetro nombre",403)
+            abort(400, {'message': 'No name'})
         if len(request.form['name']) < 3:
-            return sendResJson(None,"Nombre no válido",403)
+            abort(400, message="Name not valid")
 
-        #validaciones precio
-        if not "price" in request.form:
-            return sendResJson(None,"Sin parámetro precio",403)
-
-        try:
-            float(request.form['price'])
-        except ValueError:
-            return sendResJson(None,"Precio no válido",403)
-
-        #validaciones category_id
         if not "category_id" in request.form:
-            return sendResJson(None,"Sin parámetro categoría",403)
+            abort(400, {'message': 'No Category'})
 
         try:
             int(request.form['category_id'])
         except ValueError:
-            return sendResJson(None,"Categoría no válida",403)
-
-        #if request.form['price'] is not float:
-            #return "Precio no válido",403
-
-        p.name = request.form['name']
-        p.price = request.form['price']
-        p.category_id = request.form['category_id']
+            abort(400, {'message': 'Category not valid'})
         
-        db.session.add(p)
-        db.session.commit()
+        operations.update(id, request.form['name'], request.form['category_id'])
 
-        return sendResJson(productToJson(p),None,200)
+        return task.serialize
 
     def delete(self,id):
-        product = Product.query.get(id)   
-        if not product:
-            return sendResJson(None,"Producto no existe",403)
+        task = operations.getById(id)   
+        if not task:
+            abort(400, {'message': 'Task not exits'})
         
-        db.session.delete(product)
-        db.session.commit()
+        operations.delete(id)
 
-        return sendResJson("Producto eliminado",None,200)
+        return json.dumps({'message': 'Success'}) 
