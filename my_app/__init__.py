@@ -46,8 +46,8 @@ def hello_world():
 
 #api
 from my_app.api.task import TaskApi
+from my_app.api.task_arg import TaskArgApi
 api = Api(app)
-# api.add_resource(TaskApi, '/api/task')
-# api.add_resource(TaskApi, '/api/task/<id>')
 
-api.add_resource(TaskApi, '/api/task', '/api/task/<int:id>')
+# api.add_resource(TaskApi, '/api/task', '/api/task/<int:id>')
+api.add_resource(TaskArgApi, '/api/task', '/api/task/<int:id>')
