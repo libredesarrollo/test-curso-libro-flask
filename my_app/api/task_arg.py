@@ -1,7 +1,6 @@
 import json
 
-from flask_restful import reqparse
-from flask_restful import Resource 
+from flask_restful import Resource, reqparse
 from flask import request, abort
 
 parser = reqparse.RequestParser()
@@ -34,29 +33,14 @@ class TaskArgApi(Resource):
         return res 
  
     def post(self):
-        print('fff')
         args = parser.parse_args()
-        name = args['name']
-        print(name)
-        print('fff')
-        if not request.form:
-            abort(403, message="Sin parámetros")
+
+ 
         
+        if len(args['name']) < 3:
+            abort(400, {'message':"Name not valid"})
 
-        if not "name" in request.form:
-            abort(400, {'message': 'No name'})
-        if len(request.form['name']) < 3:
-            abort(400, message="Name not valid")
-
-        if not "category_id" in request.form:
-            abort(400, {'message': 'No Category'})
-
-        try:
-            int(request.form['category_id'])
-        except ValueError:
-            abort(400, {'message': 'Category not valid'})
-
-        task = operations.create(request.form['name'],request.form['category_id'])
+        task = operations.create(args['name'],args['category_id'])
 
         return task.serialize
 
@@ -65,23 +49,12 @@ class TaskArgApi(Resource):
         if not task:
             abort(400, {'message': 'Task not exits'})
 
-        if not request.form:
-            abort(403, message="No params")
-        
-        if not "name" in request.form:
-            abort(400, {'message': 'No name'})
-        if len(request.form['name']) < 3:
+        args = parser.parse_args()
+            
+        if len(args['name']) < 3:
             abort(400, message="Name not valid")
-
-        if not "category_id" in request.form:
-            abort(400, {'message': 'No Category'})
-
-        try:
-            int(request.form['category_id'])
-        except ValueError:
-            abort(400, {'message': 'Category not valid'})
         
-        operations.update(id, request.form['name'], request.form['category_id'])
+        operations.update(id, args['name'], args['category_id'])
 
         return task.serialize
 
