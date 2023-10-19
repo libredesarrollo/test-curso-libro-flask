@@ -46,8 +46,9 @@ def hello_world():
 
 #api
 from my_app.api.task import TaskApi
-from my_app.api.task_arg import TaskArgApi
+from my_app.api.task_arg import TaskArgApi, TaskArgApiPaginate
 api = Api(app)
 
 # api.add_resource(TaskApi, '/api/task', '/api/task/<int:id>')
 api.add_resource(TaskArgApi, '/api/task', '/api/task/<int:id>')
+api.add_resource(TaskArgApiPaginate, '/api/task/paginate/<int:page>/<int:per_page>')

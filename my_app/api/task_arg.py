@@ -66,3 +66,13 @@ class TaskArgApi(Resource):
         operations.delete(id)
 
         return json.dumps({'message': 'Success'}) 
+
+class TaskArgApiPaginate(Resource): 
+ 
+    def get(self, page: int, per_page: int): 
+        tasks = operations.pagination(page, per_page) 
+        res = {} 
+        for task in tasks: 
+            res[task.id] = task.serialize
+
+        return res
