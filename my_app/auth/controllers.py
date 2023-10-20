@@ -9,7 +9,20 @@ authRoute = Blueprint('auth', __name__)
  
 @login_manager.user_loader 
 def load_user(id): 
-    return User.query.get(int(id)) 
+    return User.query.get(int(id))
+
+
+# @auth.verify_password
+# def verify_password(username_or_token, password):
+#     # first try token
+#     user = User.verify_auth_token(username_or_token)
+#     # then check for username and password pair
+#     if not user:
+#         user = User.query.filter_by(username = username_or_token).first()
+#         if not user or not user.verify_password(password):
+#             return False
+#         g.user = user
+#     return True
  
 @authRoute.before_request 
 def get_current_user(): 
