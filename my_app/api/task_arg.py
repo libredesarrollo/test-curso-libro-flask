@@ -1,6 +1,7 @@
 import json
 
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, fields, marshal_with
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import request, abort
 
 parser = reqparse.RequestParser()
@@ -9,29 +10,29 @@ parser.add_argument('category_id', type=int, required=True, help='Category canno
 
 from my_app.tasks import operations
 
+task_fields = {
+    'id': fields.Integer(),
+    'name': fields.String(),
+    # 'category': fields.String(attribute=lambda x: x.category.name)
+}
 
 #  raise abort(500, message="Unable to determine domain permissions")
 class TaskArgApi(Resource): 
  
+    @marshal_with(task_fields)
+    @jwt_required
     def get(self, id=None): 
         if not id: 
             tasks = operations.getAll() 
-            res = {} 
-            for task in tasks: 
-                res[task.id] = { 
-                    'name': task.name, 
-                    'category': task.category.name
-                } 
+            return tasks
         else: 
             task = operations.getById(id)
             if not task: 
                 abort(404) 
-            res = json.dumps({ 
-                'name': task.name, 
-                'category': task.category.name
-            }) 
-        return res 
+            return task 
  
+    @marshal_with(task_fields)
+    @jwt_required
     def post(self):
         args = parser.parse_args()
 

@@ -3,7 +3,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager 
-from flask_restful import Api 
+from flask_restful import Api
+from flask_jwt_extended import JWTManager
 
 from flask import render_template, request 
 
@@ -23,6 +24,9 @@ login_manager = LoginManager()
 login_manager.init_app(app) 
 # login_manager.login_view = 'auth.login' 
 
+
+jwt = JWTManager()
+jwt.init_app(app)
 
 # blueprints
 from my_app.auth.controllers import authRoute 
