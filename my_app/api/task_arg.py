@@ -2,7 +2,7 @@ import json
 
 from flask_restful import Resource, reqparse, fields, marshal_with
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask import request, abort
+from flask import request, abort, jsonify
 
 parser = reqparse.RequestParser()
 parser.add_argument('name', required=True, help='Name cannot be blank!')
@@ -19,8 +19,8 @@ task_fields = {
 #  raise abort(500, message="Unable to determine domain permissions")
 class TaskArgApi(Resource): 
  
-    @marshal_with(task_fields)
-    @jwt_required
+    # @marshal_with(task_fields)
+    @jwt_required()
     def get(self, id=None): 
         if not id: 
             tasks = operations.getAll() 
@@ -29,7 +29,7 @@ class TaskArgApi(Resource):
             task = operations.getById(id)
             if not task: 
                 abort(404) 
-            return task 
+            return jsonify(task.serialize) 
  
     @marshal_with(task_fields)
     @jwt_required
@@ -77,3 +77,10 @@ class TaskArgApiPaginate(Resource):
             res[task.id] = task.serialize
 
         return res
+
+import requests
+
+# res = requests.post('http://127.0.0.1:5000/api/product', data=json.dumps(d), headers={'Content-Type': 'application/json'})
+# res = requests.post('http://127.0.0.1:5000/api/product', headers={'Content-Type': 'application/json', "Authorization": "Bearer MYREALLYLONGTOKENIGOT"})
+
+# res.json()
