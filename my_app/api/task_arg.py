@@ -13,14 +13,14 @@ from my_app.tasks import operations
 task_fields = {
     'id': fields.Integer(),
     'name': fields.String(),
-    # 'category': fields.String(attribute=lambda x: x.category.name)
+    'category': fields.String(attribute=lambda x: x.category.name),
 }
 
 #  raise abort(500, message="Unable to determine domain permissions")
 class TaskArgApi(Resource): 
  
-    # @marshal_with(task_fields)
-    @jwt_required()
+    @marshal_with(task_fields)
+    # @jwt_required()
     def get(self, id=None): 
         if not id: 
             tasks = operations.getAll() 
@@ -29,7 +29,7 @@ class TaskArgApi(Resource):
             task = operations.getById(id)
             if not task: 
                 abort(404) 
-            return jsonify(task.serialize) 
+            return task
  
     @marshal_with(task_fields)
     @jwt_required
