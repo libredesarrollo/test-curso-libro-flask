@@ -45,7 +45,8 @@ app.register_blueprint(taskRoute)
 @app.route('/hello') 
 def hello_world(): 
     name = request.args.get('name', 'DesarrolloLibre') 
-    return render_template('index.html', name=name)
+    return {'hello': 'world'}
+    # return render_template('index.html', name=name)
 
 
 #api
