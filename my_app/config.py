@@ -9,6 +9,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI="mysql+pymysql://root:@localhost:3306/test_flask" 
     SECRET_KEY="SECRETKEY" 
     UPLOAD_FOLDER=os.path.realpath('.') + '/my_app/uploads'
+    WTF_CSRF_ENABLED = False
  
 class ProdConfig(Config): 
     pass 
