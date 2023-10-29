@@ -1,20 +1,32 @@
 
 import json
 
-def test_create(app, client):
-    # res = client.get('/task/create')
-    # assert res.status_code == 200
-    # expected = {'hello': 'world'}
-    # assert expected == json.loads(res.get_data(as_text=True))
+from my_app.tasks import operations
 
-    payload = {
+def test_create(app, client):
+    response = client.get('/tasks/create')
+
+    assert response.status_code == 200
+    assert b'<input id="name" name="name" required type="text" value="">' in response.get_data()
+    assert '<input id="name" name="name" required type="text" value="">' in response.get_data(as_text=True)
+
+    dataform = {
         "name": "andres",
         "category": 1
     }
 
-    response =  client.post("/tasks/create", data=payload)
+    tasksCount=0
+    with app.app_context():
+        tasksCount = len(operations.getAll())
+    response =  client.post("/tasks/create", data=dataform)
 
-    # assert response.status_code == 200
+    assert response.status_code == 200
+    assert '<input id="name" name="name" required type="text" value="'+dataform.get('name')+'">' in response.get_data(as_text=True)
+    with app.app_context():
+        assert len(operations.getAll()) == tasksCount+1
+    
+    
+    
     # assert response.json() == {
     #     "message": "User created successfully"
     # }
