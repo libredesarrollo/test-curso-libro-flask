@@ -24,6 +24,10 @@ def test_create(app, client):
     assert '<input id="name" name="name" required type="text" value="'+dataform.get('name')+'">' in response.get_data(as_text=True)
     with app.app_context():
         assert len(operations.getAll()) == tasksCount+1
+        lastTask = operations.getLastTask()
+        assert lastTask.name == dataform.get('name') and lastTask.category_id == dataform.get('category')
+
+    
     
     
     

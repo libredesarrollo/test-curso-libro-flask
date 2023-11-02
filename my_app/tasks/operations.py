@@ -10,6 +10,10 @@ def getById(id: int):
     # task = db.session.query(models.Task).get(id)
     return task
 
+def getLastTask():
+    task = models.Task.query.order_by(models.Task.id.desc()).first()
+    return task
+
 def getAll():
     tasks = db.session.query(models.Task).all()
     return tasks 

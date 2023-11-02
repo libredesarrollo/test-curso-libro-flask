@@ -59,7 +59,7 @@ class TaskArgApi(Resource):
 
         task = operations.create(args['name'],args['category_id'])
 
-        return task.serialize
+        return task
 
     def put(self,id):
         task = operations.getById(id)  
