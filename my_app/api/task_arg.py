@@ -47,19 +47,17 @@ class TaskArgApi(Resource):
                 abort(404) 
             return task
  
-    @marshal_with(task_fields)
+    # @marshal_with(task_fields)
     @jwt_required
     def post(self):
         args = parser.parse_args()
 
- 
-        
         if len(args['name']) < 3:
             abort(400, {'message':"Name not valid"})
 
         task = operations.create(args['name'],args['category_id'])
 
-        return task
+        return task.serialize
 
     def put(self,id):
         task = operations.getById(id)  
