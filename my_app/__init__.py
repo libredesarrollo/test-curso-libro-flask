@@ -11,7 +11,7 @@ from flask import render_template, request
 from my_app.config import DevConfig
 
  
-app = Flask(__name__)
+app = Flask(__name__, static_folder='assets')
 app.config.from_object(DevConfig) 
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost:3306/test_flask'

@@ -1,13 +1,21 @@
 from sqlalchemy.orm import Session
+# from sqlalchemy. import 
+# get_or_404
 
 from my_app.tasks import models
 from my_app import db
 
 
 def getById(id: int):
-    # task = db.session.query(models.Task).filter(models.Task.id == id).first()
-    task = models.Task.query.get_or_404(id)  
+    task = db.session.query(models.Task).filter(models.Task.id == id).first()
+    # task = models.Task.query.get_or_404(id)  
+    
+    # get_or_404(models.Task,id)
     # task = db.session.query(models.Task).get(id)
+    # db.session.get(models.Task, id)
+    # task = db.session.query.  #query.get_or_404(models.Task,ident=id) 
+    task = db.session.get(models.Task, id)
+    
     return task
 
 def getLastTask():

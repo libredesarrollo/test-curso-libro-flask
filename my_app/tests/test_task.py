@@ -27,15 +27,25 @@ def test_create(app, client):
         lastTask = operations.getLastTask()
         assert lastTask.name == dataform.get('name') and lastTask.category_id == dataform.get('category')
 
-    
-    
-    
-    
-    # assert response.json() == {
-    #     "message": "User created successfully"
-    # }
-# def test_index_page__logged_in(client):
-#     with client:
-#         formdata = {'username': 'testuser', 'password': 'testing', 'remember_me': False}
-#         client.post('/auth/login', data=formdata)
-#         assert current_user.username == 'testuser'
+
+def test_update(app, client):
+    with app.app_context():
+        lastTask = operations.getLastTask()
+        response = client.get('/tasks/update/'+str(lastTask.id))
+
+        assert response.status_code == 200
+        assert '<input id="name" name="name" required type="text" value="'+lastTask.name+'">' in response.get_data(as_text=True)
+
+        dataform = {
+            "name": "new Task",
+            "category": 1
+        }
+
+        response =  client.post("/tasks/update/"+str(lastTask.id), data=dataform)
+
+        assert response.status_code == 200
+        assert '<input id="name" name="name" required type="text" value="'+dataform.get('name')+'">' in response.get_data(as_text=True)
+
+        task = operations.getById(lastTask.id)
+
+        assert task.name == dataform.get('name') and task.category_id == dataform.get('category')
