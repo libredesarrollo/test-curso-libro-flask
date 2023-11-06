@@ -49,3 +49,11 @@ def test_update(app, client):
         task = operations.getById(lastTask.id)
 
         assert task.name == dataform.get('name') and task.category_id == dataform.get('category')
+
+def test_index(app, client):
+    with app.app_context():
+        response = client.get('/tasks/')
+        assert response.status_code == 200
+        tasks = operations.getAll()
+        for t in tasks:
+            assert '<td>'+t.name+'</td>' in response.get_data(as_text=True)

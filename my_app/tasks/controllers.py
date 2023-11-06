@@ -19,7 +19,7 @@ task_list =[]
 @taskRoute.route('/')
 # @taskRoute.route('/<int:id>')
 def index(): #page:int=1
-    return render_template('dashboard/task/index.html',tasks=task_list)
+    return render_template('dashboard/task/index.html', tasks=operations.getAll())
 
 @taskRoute.route('/<int:id>')
 def show(id:int):
