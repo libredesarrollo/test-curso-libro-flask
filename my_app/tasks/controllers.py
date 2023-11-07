@@ -27,8 +27,11 @@ def show(id:int):
 
 @taskRoute.route('/delete/<int:id>')
 def delete(id:int):
-   del task_list[id]
-   return "Delete "+ str(id)
+    task=operations.getById(id)
+    operations.delete(task.id)
+   #  doc_operations.delete(task.document_id)
+    return redirect(url_for('tasks.index'))
+
 
 @taskRoute.route('/create', methods=('GET', 'POST'))
 def create():

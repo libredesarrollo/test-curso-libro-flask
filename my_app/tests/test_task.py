@@ -57,3 +57,12 @@ def test_index(app, client):
         tasks = operations.getAll()
         for t in tasks:
             assert '<td>'+t.name+'</td>' in response.get_data(as_text=True)
+
+def test_delete(app, client):
+    with app.app_context():
+        lastTask = operations.getLastTask()
+        response = client.get('/tasks/delete/'+str(lastTask.id))
+        assert response.status_code == 302
+
+        task = operations.getById(lastTask.id)
+        assert task is None
