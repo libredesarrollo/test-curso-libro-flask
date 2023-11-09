@@ -18,8 +18,9 @@ task_list =[]
 
 @taskRoute.route('/')
 # @taskRoute.route('/<int:id>')
-def index(): #page:int=1
-    return render_template('dashboard/task/index.html', tasks=operations.getAll())
+def index(): #page:int=1 
+
+   return render_template('dashboard/task/index.html', tasks=operations.pagination(request.args.get('page', 1, type=int), request.args.get('size', 10, type=int)))
 
 @taskRoute.route('/<int:id>')
 def show(id:int):

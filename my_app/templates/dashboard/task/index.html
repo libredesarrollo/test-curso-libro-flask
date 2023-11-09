@@ -1,5 +1,7 @@
 {% extends "dashboard/master.html" %}
 
+{% from 'macro/pagination.html' import m_pagination %}
+
 {% block head %} 
     {{ super() }}
     <meta name="description" content="List of task">
@@ -15,7 +17,7 @@
 
         <td>Options</td>
     </tr>
-    {% for t in tasks %}
+    {% for t in tasks.items %}
     <tr>
         <td>
             {{ loop.index }}
@@ -27,5 +29,7 @@
     </tr>
     {% endfor %}
 </table>
+
+{{ m_pagination(tasks) }}
 
 {% endblock %}
