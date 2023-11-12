@@ -48,7 +48,7 @@ class TaskArgApi(Resource):
             return task
  
     # @marshal_with(task_fields)
-    @jwt_required
+    @jwt_required()
     def post(self):
         args = parser.parse_args()
 

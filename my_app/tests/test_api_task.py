@@ -2,30 +2,49 @@
 import json
 
 from my_app.tasks import operations
+from my_app.auth.models import User
+
+from flask_jwt_extended import create_access_token
 
 def test_create(app, client):
-    response = client.get('/tasks/create')
-
-    assert response.status_code == 200
-    assert b'<input id="name" name="name" required type="text" value="">' in response.get_data()
-    assert '<input id="name" name="name" required type="text" value="">' in response.get_data(as_text=True)
 
     dataform = {
         "name": "andres",
-        "category": 1
+        "category_id": 1
     }
 
     tasksCount=0
     with app.app_context():
         tasksCount = len(operations.getAll())
-    response =  client.post("/tasks/create", data=dataform)
+        response =  client.post("/api/task", json=dataform)
+        assert response.status_code == 200
 
-    assert response.status_code == 200
-    assert '<input id="name" name="name" required type="text" value="'+dataform.get('name')+'">' in response.get_data(as_text=True)
-    with app.app_context():
         assert len(operations.getAll()) == tasksCount+1
         lastTask = operations.getLastTask()
-        assert lastTask.name == dataform.get('name') and lastTask.category_id == dataform.get('category')
+        assert lastTask.name == response.get_json()['name']
+        assert lastTask.id == response.get_json()['id']
+
+def test_create_auth(app, client):
+
+    dataform = {
+        "name": "andres",
+        "category_id": 1
+    }
+
+    tasksCount=0
+    with app.app_context():
+        tokenauth = create_access_token(identity=User.query.filter_by(username='admin').first().id)
+        headers = { "Authorization": "Bearer "+tokenauth }
+        # print(tokenauth)
+        # assert True == False
+        tasksCount = len(operations.getAll())
+        response =  client.post("/api/task", json=dataform, headers=headers)
+        assert response.status_code == 200
+
+        assert len(operations.getAll()) == tasksCount+1
+        lastTask = operations.getLastTask()
+        assert lastTask.name == response.get_json()['name']
+        assert lastTask.id == response.get_json()['id']
 
 
 def test_update(app, client):
@@ -59,6 +78,14 @@ def test_index(app, client):
         tasks = operations.getAll()
         for i in range(len(tasks)):
             assert tasks[i].name == response.get_json()[i]['name']
+
+def test_show(app, client):
+    with app.app_context():
+        lastTask = operations.getLastTask()
+        response = client.get('/api/task/'+str(lastTask.id))
+        assert response.status_code == 200
+        assert lastTask.name == response.get_json()['name']
+        assert lastTask.id == response.get_json()['id']
 
 def test_delete(app, client):
     with app.app_context():
