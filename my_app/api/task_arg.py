@@ -71,13 +71,13 @@ class TaskArgApi(Resource):
         
         operations.update(id, args['name'], args['category_id'])
 
-        if args['file']:
-            f = args['file']
-            if f and config.allowed_extensions_file(f.filename):
-                filename = secure_filename(f.filename)
+        # if args['file']:
+        #     f = args['file']
+        #     if f and config.allowed_extensions_file(f.filename):
+        #         filename = secure_filename(f.filename)
             
-                document = doc_operations.create(filename, filename.lower().rsplit('.', 1)[1], f)
-                operations.update(id, task.name, task.category_id, document.id)
+        #         document = doc_operations.create(filename, filename.lower().rsplit('.', 1)[1], f)
+        #         operations.update(id, task.name, task.category_id, document.id)
 
         return task.serialize
 

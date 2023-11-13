@@ -48,26 +48,21 @@ def test_create_auth(app, client):
 
 
 def test_update(app, client):
+    dataform = {
+        "name": "Task 1.122",
+        "category_id": 1
+    }
     with app.app_context():
         lastTask = operations.getLastTask()
-        response = client.get('/tasks/update/'+str(lastTask.id))
+        response = client.put('/api/task/'+str(lastTask.id), json=dataform)
 
         assert response.status_code == 200
-        assert '<input id="name" name="name" required type="text" value="'+lastTask.name+'">' in response.get_data(as_text=True)
 
-        dataform = {
-            "name": "new Task",
-            "category": 1
-        }
+        taskUpdate = operations.getById(lastTask.id)
 
-        response =  client.post("/tasks/update/"+str(lastTask.id), data=dataform)
-
-        assert response.status_code == 200
-        assert '<input id="name" name="name" required type="text" value="'+dataform.get('name')+'">' in response.get_data(as_text=True)
-
-        task = operations.getById(lastTask.id)
-
-        assert task.name == dataform.get('name') and task.category_id == dataform.get('category')
+        assert taskUpdate.name == response.get_json()['name']
+        assert taskUpdate.category_id == response.get_json()['category_id']
+        assert taskUpdate.id == response.get_json()['id']
 
 from flask import jsonify 
 
@@ -90,8 +85,8 @@ def test_show(app, client):
 def test_delete(app, client):
     with app.app_context():
         lastTask = operations.getLastTask()
-        response = client.get('/tasks/delete/'+str(lastTask.id))
-        assert response.status_code == 302
+        response = client.delete('/api/task/'+str(lastTask.id))
+        assert response.status_code == 200
 
         task = operations.getById(lastTask.id)
         assert task is None
