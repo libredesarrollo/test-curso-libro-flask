@@ -3,7 +3,10 @@ import json
 
 from my_app.tasks import operations
 
-def test_create(app, client):
+def test_create(app, client, auth):
+
+    auth.login()
+
     response = client.get('/tasks/create')
 
     assert response.status_code == 200

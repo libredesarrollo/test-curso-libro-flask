@@ -1,6 +1,7 @@
 import os
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask_login import login_required
 from werkzeug.utils import secure_filename
 
 # from my_app.tasks.models import Task
@@ -15,6 +16,12 @@ from my_app import config
 taskRoute = Blueprint('tasks',__name__, url_prefix="/tasks")
 
 task_list =[]
+
+@taskRoute.before_request
+@login_required
+def before():
+    pass
+
 
 @taskRoute.route('/')
 # @taskRoute.route('/<int:id>')
