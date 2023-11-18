@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager 
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
+from flask_cli import FlaskCLI
 
 from flask import render_template, request 
 
@@ -13,6 +14,8 @@ from my_app.config import DevConfig
  
 app = Flask(__name__, static_folder='assets')
 app.config.from_object(DevConfig) 
+
+FlaskCLI(app)
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost:3306/test_flask'
 #load configuration
@@ -58,3 +61,7 @@ api = Api(app)
 api.add_resource(TaskArgApi, '/api/task', '/api/task/<int:id>')
 api.add_resource(TaskArgUploadApi, '/api/task/upload/<int:id>')
 api.add_resource(TaskArgApiPaginate, '/api/task/paginate/<int:page>/<int:per_page>')
+
+# extensions
+from my_app.comands.user import register
+register(app)
