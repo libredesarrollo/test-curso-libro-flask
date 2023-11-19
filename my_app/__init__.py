@@ -65,3 +65,23 @@ api.add_resource(TaskArgApiPaginate, '/api/task/paginate/<int:page>/<int:per_pag
 # extensions
 from my_app.comands.user import register
 register(app)
+
+#babel
+from flask_babel import Babel 
+ 
+def get_locale():
+    # otherwise try to guess the language from the user accept
+    # header the browser transmits.  We support es/en in this
+    # example.  The best match wins.
+    return request.accept_languages.best_match(['es', 'en'])
+
+def get_timezone():
+    user = getattr(g, 'user', None)
+    if user is not None:
+        return user.timezone
+
+ALLOWED_LANGUAGES = { 
+   'en': 'English', 
+   'es': 'Spanish', 
+} 
+babel = Babel(app) 
