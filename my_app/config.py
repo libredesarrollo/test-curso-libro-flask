@@ -9,14 +9,16 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI="mysql+pymysql://root:@localhost:3306/test_flask" 
     SECRET_KEY="SECRETKEY" 
     UPLOAD_FOLDER=os.path.realpath('.') + '/my_app/uploads'
+    CACHE_TYPE = 'SimpleCache'
     # WTF_CSRF_ENABLED = False
  
-class ProdConfig(Config): 
+class ProdConfig(Config):
     pass 
  
 class DevConfig(Config): 
     DEBUG = True 
-    TESTING = True 
+    TESTING = True
+    # CACHE_TYPE = 'null' 
 
 class TestingConfig(DevConfig): 
     WTF_CSRF_ENABLED = False

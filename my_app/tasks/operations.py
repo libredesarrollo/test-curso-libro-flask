@@ -3,9 +3,10 @@ from sqlalchemy.orm import Session
 # get_or_404
 
 from my_app.tasks import models
-from my_app import db
+from my_app import db, cache
 
-
+# @cache.memoize(60)
+@cache.cached(timeout=60, key_prefix='last_task') 
 def getById(id: int):
     task = db.session.query(models.Task).filter(models.Task.id == id).first()
     # task = models.Task.query.get_or_404(id)  
@@ -18,6 +19,7 @@ def getById(id: int):
     
     return task
 
+@cache.cached(timeout=60, key_prefix='last_task') 
 def getLastTask():
     task = models.Task.query.order_by(models.Task.id.desc()).first()
     return task
@@ -50,6 +52,7 @@ def delete(id: int):
     db.session.delete(task)
     db.session.commit()
 
+@cache.cached(timeout=7200, key_prefix='pagination_data') 
 def pagination(page:int=1, per_page:int=10):
     return models.Task.query.paginate(page=page, per_page=per_page)
 

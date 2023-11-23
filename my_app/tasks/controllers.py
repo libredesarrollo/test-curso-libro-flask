@@ -11,22 +11,22 @@ from my_app.tasks import models
 from my_app.tasks import operations
 from my_app.documents import operations as doc_operations
 
-from my_app import config
+from my_app import config, cache
 
 taskRoute = Blueprint('tasks',__name__, url_prefix="/tasks")
 
 task_list =[]
 
 @taskRoute.before_request
-@login_required
+# @login_required
 def before():
     pass
 
 
 @taskRoute.route('/')
 # @taskRoute.route('/<int:id>')
+@cache.cached(timeout=60)
 def index(): #page:int=1 
-
    return render_template('dashboard/task/index.html', tasks=operations.pagination(request.args.get('page', 1, type=int), request.args.get('size', 10, type=int)))
 
 @taskRoute.route('/<int:id>')
@@ -65,7 +65,8 @@ def create():
 @taskRoute.route('/update/<int:id>', methods=['GET','POST'])
 def update(id:int):
 
-   task = operations.getById(id)   
+   # task = operations.getById(id)   
+   task = models.Task.getById(id)
    form = forms.Task()#meta={'csrf':False}
    formTag = forms.TaskTagAdd()
 

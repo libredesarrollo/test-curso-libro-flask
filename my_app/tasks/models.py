@@ -22,6 +22,10 @@ class Task(db.Model):
 
     document = relationship('Document', lazy='joined')
 
+    def getById(self, id: int):
+        task = db.session.query(self).filter(id == id).first()
+        return id
+
     @property
     def serialize(self):
        return {

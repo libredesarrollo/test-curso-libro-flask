@@ -6,6 +6,8 @@ from flask_login import LoginManager
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_cli import FlaskCLI
+from flask_caching import Cache 
+from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import render_template, request 
 
@@ -30,6 +32,15 @@ login_manager.init_app(app)
 
 jwt = JWTManager()
 jwt.init_app(app)
+
+
+#cache
+cache = Cache()
+cache.init_app(app)
+
+#debug
+
+# toolbar = DebugToolbarExtension(app)
 
 # blueprints
 from my_app.auth.controllers import authRoute 
@@ -56,6 +67,9 @@ def hello_world():
 from my_app.api.task import TaskApi
 from my_app.api.task_arg import TaskArgApi, TaskArgUploadApi, TaskArgApiPaginate
 api = Api(app)
+
+
+
 
 # api.add_resource(TaskApi, '/api/task', '/api/task/<int:id>')
 api.add_resource(TaskArgApi, '/api/task', '/api/task/<int:id>')
@@ -84,4 +98,5 @@ ALLOWED_LANGUAGES = {
    'en': 'English', 
    'es': 'Spanish', 
 } 
-babel = Babel(app) 
+babel = Babel(app)
+
