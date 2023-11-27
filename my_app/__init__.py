@@ -7,7 +7,7 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_cli import FlaskCLI
 from flask_caching import Cache 
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import render_template, request 
 
@@ -44,9 +44,10 @@ cache.init_app(app)
 
 # blueprints
 from my_app.auth.controllers import authRoute 
-from my_app.tasks.controllers import taskRoute 
+# from my_app.tasks.controllers import taskRoute 
+import my_app.tasks.controllers
 app.register_blueprint(authRoute) 
-app.register_blueprint(taskRoute) 
+# app.register_blueprint(taskRoute) 
 
 
 
