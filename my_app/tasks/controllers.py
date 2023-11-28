@@ -32,9 +32,39 @@ class CreateView(View):
         return render_template(self.template)
 
 
+class UpdateView(View):
+    init_every_request = False
+
+    def __init__(self, template):
+        self.template = template
+
+    def dispatch_request(self, id):
+        task = request.form.get('task')
+        if task is not None:
+            task_list[id] = task
+            return redirect(url_for('tasks.index'))
+        return render_template(self.template)
+
+class DetailView(View):
+    def __init__(self):
+        pass
+
+    def dispatch_request(self, id):
+        return 'Show '+str(id)
+
+class DeleteView(View):
+    def __init__(self):
+        pass
+
+    def dispatch_request(self, id):
+        del task_list[id]
+        return redirect(url_for('tasks.index'))
 
 app.add_url_rule('/tasks/', view_func=ListView.as_view('tasks.list','dashboard/task/index.html'))
+app.add_url_rule('/tasks/<int:id>',view_func=DetailView.as_view('tasks.show'))
 app.add_url_rule('/tasks/create/', view_func=CreateView.as_view('tasks.create','dashboard/task/create.html'))
+app.add_url_rule('/tasks/update/<int:id>/', view_func=UpdateView.as_view('tasks.update','dashboard/task/update.html'))
+app.add_url_rule('/tasks/delete/<int:id>/', view_func=DeleteView.as_view('tasks.delete'))
 
 
 
