@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -62,6 +62,25 @@ def hello_world():
     name = request.args.get('name', 'DesarrolloLibre') 
     return {'hello': 'world'}
     # return render_template('index.html', name=name)
+
+@app.route('/test/session/check')
+def test_session_check():
+    if 'username' in session:
+        return 'Logged in as '+session["username"]
+    return 'You are not logged in'
+
+
+@app.route('/test/session/set')
+def test_session_set():
+    session['username'] = 'user'
+    return 'Test'
+
+
+@app.route('/test/session/pop')
+def test_session_pop():
+    session.pop('username', None)
+    return 'Test'
+
 
 
 #api
