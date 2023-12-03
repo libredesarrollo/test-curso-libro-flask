@@ -22,6 +22,13 @@ class User(db.Model):
         return jwt.encode(
             { 'id': self.id, 'exp': time.time() + expires_in }, app.config['SECRET_KEY'], algorithm='HS256')
     
+    @property
+    def serialize(self):
+       return {
+           'id'    : self.id,
+           'username'  : self.username
+       }
+
     @staticmethod
     def verify_auth_token(token):
         try:

@@ -44,10 +44,10 @@ cache.init_app(app)
 
 # blueprints
 from my_app.auth.controllers import authRoute 
-# from my_app.tasks.controllers import taskRoute 
-import my_app.tasks.controllers
+from my_app.tasks.controllers import taskRoute 
+# import my_app.tasks.controllers
 app.register_blueprint(authRoute) 
-# app.register_blueprint(taskRoute) 
+app.register_blueprint(taskRoute) 
 
 
 

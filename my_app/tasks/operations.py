@@ -52,7 +52,7 @@ def delete(id: int):
     db.session.delete(task)
     db.session.commit()
 
-@cache.cached(timeout=7200, key_prefix='pagination_data') 
+# @cache.cached(timeout=7200, key_prefix='pagination_data') 
 def pagination(page:int=1, per_page:int=10):
     return models.Task.query.paginate(page=page, per_page=per_page)
 
