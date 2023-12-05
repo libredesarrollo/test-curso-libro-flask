@@ -6,7 +6,8 @@ from flask_login import LoginManager
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_cli import FlaskCLI
-from flask_caching import Cache 
+from flask_caching import Cache
+from flask_babel import Babel
 # from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import render_template, request 
@@ -100,14 +101,15 @@ api.add_resource(TaskArgApiPaginate, '/api/task/paginate/<int:page>/<int:per_pag
 from my_app.comands.user import register
 register(app)
 
-#babel
-from flask_babel import Babel 
- 
+#Babel
+
+
+
 def get_locale():
-    # otherwise try to guess the language from the user accept
-    # header the browser transmits.  We support es/en in this
-    # example.  The best match wins.
+    return 'es'
     return request.accept_languages.best_match(['es', 'en'])
+
+babel = Babel(app, locale_selector=get_locale)
 
 def get_timezone():
     user = getattr(g, 'user', None)

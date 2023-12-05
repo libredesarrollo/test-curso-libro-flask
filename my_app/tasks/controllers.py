@@ -2,6 +2,8 @@ import os
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required
+from flask_babel import gettext
+
 from werkzeug.utils import secure_filename
 
 # from my_app.tasks.models import Task
@@ -27,6 +29,7 @@ def before():
 # @taskRoute.route('/<int:id>')
 # @cache.cached(timeout=60)
 def index(): #page:int=1 
+   title = gettext('List of Task')
    return render_template('dashboard/task/index.html', tasks=operations.pagination(request.args.get('page', 1, type=int), request.args.get('size', 10, type=int)))
 
 @taskRoute.route('/<int:id>')
