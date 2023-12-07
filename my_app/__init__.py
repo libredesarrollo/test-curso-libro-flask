@@ -106,7 +106,7 @@ register(app)
 
 
 def get_locale():
-    return 'es'
+    # return 'es'
     return request.accept_languages.best_match(['es', 'en'])
 
 babel = Babel(app, locale_selector=get_locale)
@@ -120,5 +120,5 @@ ALLOWED_LANGUAGES = {
    'en': 'English', 
    'es': 'Spanish', 
 } 
-babel = Babel(app)
+
 

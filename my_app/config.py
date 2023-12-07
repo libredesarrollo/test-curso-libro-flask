@@ -10,7 +10,7 @@ class Config(object):
     SECRET_KEY="SECRETKEY" 
     UPLOAD_FOLDER=os.path.realpath('.') + '/my_app/uploads'
     CACHE_TYPE = 'SimpleCache'
-    BABEL_DEFAULT_LOCALE = 'es'
+    BABEL_DEFAULT_LOCALE = 'en'
     # WTF_CSRF_ENABLED = False
  
 class ProdConfig(Config):
