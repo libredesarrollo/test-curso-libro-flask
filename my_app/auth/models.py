@@ -10,6 +10,18 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True) 
     username = db.Column(db.String(100)) 
     pwdhash = db.Column(db.String(500)) 
+
+    email = db.Column(db.String(255), nullable=False, unique=True)
+    email_confirmed_at = db.Column(db.DateTime())
+    password = db.Column(db.String(255), nullable=False, server_default='')
+
+    # User information
+    first_name = db.Column(db.String(100), nullable=False, server_default='')
+    last_name = db.Column(db.String(100), nullable=False, server_default='')
+
+    # Define the relationship to Role via UserRoles
+    roles = db.relationship('Role', secondary='user_roles')
+
   
     def __init__(self, username, password): 
         self.username = username 
@@ -50,4 +62,17 @@ class User(db.Model):
         return False 
     
     def get_id(self):
-        return str(self.id) 
+        return str(self.id)
+    
+    # Define the Role data-model
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+
+# Define the UserRoles association table
+class UserRoles(db.Model):
+    __tablename__ = 'user_roles'
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
