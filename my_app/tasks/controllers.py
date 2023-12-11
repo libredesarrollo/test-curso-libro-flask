@@ -30,6 +30,7 @@ def before():
 # @cache.cached(timeout=60)
 def index(): #page:int=1 
    title = gettext('List of Task')
+   operations.getAll()
    return render_template('dashboard/task/index.html', tasks=operations.pagination(request.args.get('page', 1, type=int), request.args.get('size', 10, type=int)))
 
 @taskRoute.route('/<int:id>')

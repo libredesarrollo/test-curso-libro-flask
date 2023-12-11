@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager
 from flask_cli import FlaskCLI
 from flask_caching import Cache
 from flask_babel import Babel
-# from flask_debugtoolbar import DebugToolbarExtension
+from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import render_template, request 
 
@@ -41,7 +41,7 @@ cache.init_app(app)
 
 #debug
 
-# toolbar = DebugToolbarExtension(app)
+toolbar = DebugToolbarExtension(app)
 
 # blueprints
 from my_app.auth.controllers import authRoute 

@@ -19,6 +19,7 @@ class ProdConfig(Config):
 class DevConfig(Config): 
     DEBUG = True 
     TESTING = True
+    SQLALCHEMY_RECORD_QUERIES = True
     # CACHE_TYPE = 'null' 
 
 class TestingConfig(DevConfig): 

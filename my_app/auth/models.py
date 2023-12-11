@@ -2,6 +2,7 @@ import jwt
 import time
 
 from werkzeug.security import generate_password_hash, check_password_hash 
+from sqlalchemy.orm import relationship
 
 from my_app import app, db 
  
@@ -18,6 +19,8 @@ class User(db.Model):
     # User information
     first_name = db.Column(db.String(100), nullable=False, server_default='')
     last_name = db.Column(db.String(100), nullable=False, server_default='')
+
+    avatar = relationship('Document', lazy='joined')
 
     # Define the relationship to Role via UserRoles
     roles = db.relationship('Role', secondary='user_roles')

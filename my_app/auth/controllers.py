@@ -5,7 +5,7 @@ from flask_jwt_extended import create_access_token
 from my_app import login_manager, db
 from my_app.auth.helpers import authenticate
 from my_app.auth.models import User
-from my_app.auth.forms import  RegistrationForm, LoginForm 
+from my_app.auth.forms import  RegistrationForm, LoginForm
 
 authRoute = Blueprint('auth', __name__) 
  
