@@ -20,6 +20,8 @@ class User(db.Model):
     first_name = db.Column(db.String(100), nullable=False, server_default='')
     last_name = db.Column(db.String(100), nullable=False, server_default='')
 
+    avatar_id = db.Column(db.Integer, db.ForeignKey('documents.id'),
+        nullable=True)
     avatar = relationship('Document', lazy='joined')
 
     # Define the relationship to Role via UserRoles
