@@ -40,8 +40,26 @@ cache = Cache()
 cache.init_app(app)
 
 #debug
-
 toolbar = DebugToolbarExtension(app)
+
+#Mail
+from flask_mail import Mail, Message
+mail = Mail()
+mail.init_app(app)
+
+def send_email():
+    msg = Message(body="Text Example", 
+                  sender="no-reply@desarrollolibre.net",
+                  recipients=["andres29111990@gmail.com"], subject="Subject")
+    try:
+        print("send_email 1")
+        print(mail.send(msg))
+        print("send_email 2")
+    except Exception as e:
+        print(e)
+with app.app_context():
+    print("send_email")
+    send_email()
 
 # blueprints
 from my_app.auth.controllers import authRoute 
@@ -49,6 +67,8 @@ from my_app.tasks.controllers import taskRoute
 # import my_app.tasks.controllers
 app.register_blueprint(authRoute) 
 app.register_blueprint(taskRoute) 
+
+
 
 
 

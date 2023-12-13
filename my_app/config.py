@@ -11,6 +11,12 @@ class Config(object):
     UPLOAD_FOLDER=os.path.realpath('.') + '/my_app/uploads'
     CACHE_TYPE = 'SimpleCache'
     BABEL_DEFAULT_LOCALE = 'en'
+    
+    MAIL_SERVER = 'smtp.hostinger.com' 
+    MAIL_PORT = 465 
+    MAIL_USERNAME = 'no-reply@desarrollolibre.net' 
+    MAIL_PASSWORD = 'RRWRe-Eu8k@9*C&' 
+
     # WTF_CSRF_ENABLED = False
  
 class ProdConfig(Config):
@@ -18,7 +24,10 @@ class ProdConfig(Config):
  
 class DevConfig(Config): 
     DEBUG = True 
-    TESTING = True
+    # TESTING = True
+    MAIL_DEBUG = True
+    MAIL_SUPPRESS_SEND = False
+    TESTING = False
     SQLALCHEMY_RECORD_QUERIES = True
     # CACHE_TYPE = 'null' 
 
