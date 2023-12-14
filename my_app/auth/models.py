@@ -27,6 +27,12 @@ class User(db.Model):
     # Define the relationship to Role via UserRoles
     roles = db.relationship('Role', secondary='user_roles')
 
+    address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'),
+        nullable=True)
+    address = relationship('Address', lazy='joined')
+
+    social_networks = db.relationship('SocialNetwork', secondary='user_social_networks')
+
   
     def __init__(self, username, password): 
         self.username = username 
@@ -81,3 +87,19 @@ class UserRoles(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
     role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
+
+class SocialNetwork(db.Model):
+    __tablename__ = 'social_networks'
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+
+class UserSocialNetwork(db.Model):
+    __tablename__ = 'user_social_networks'
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
+    social_network_id = db.Column(db.Integer(), db.ForeignKey('social_networks.id', ondelete='CASCADE'))
+
+class Address(db.Model):
+    __tablename__ = 'addresses'
+    id = db.Column(db.Integer(), primary_key=True)
+    address = db.Column(db.String(250), unique=True)
