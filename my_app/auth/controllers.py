@@ -114,3 +114,10 @@ def api():
 def logout(): 
     logout_user() 
     return redirect(url_for('auth.login')) 
+
+
+#Profile
+@authRoute.route('/<int:id>')
+def profile():
+   
+   return render_template('user/profile.html')
